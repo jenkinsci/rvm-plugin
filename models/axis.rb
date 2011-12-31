@@ -5,10 +5,6 @@ module Jenkins
       # wrapper definition to be moved to jenkins-plugin-runtime
       class AxisDescriptorProxy < Java.hudson.matrix.AxisDescriptor
         include Jenkins::Model::RubyDescriptor
-        def initialize(impl, plugin, java_type)
-          super(java_type)
-          @impl, @plugin, @java_type = impl, plugin, java_type
-        end
       end
 
       class AxisProxy < Java.hudson.matrix.Axis
