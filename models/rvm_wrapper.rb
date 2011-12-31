@@ -22,14 +22,12 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     end
 
     after = StringIO.new()
-    if launcher.execute("bash","-c","source ~/.rvm/scripts/rvm && rvm use --create #{arg} && export", {:out=>after})!=0 then
-      listener << "Failed to 'rvm use #{arg}'"
-      listener << after.string
-      build.abort
+    if launcher.execute("bash","-c","source ~/.rvm/scripts/rvm && rvm_install_on_use_flag=1 && rvm use --create #{arg} && export > rvm.env", {:out=>listener})!=0 then
+      build.abort "Failed to setup RVM environment"
     end
 
-    bh = to_hash(before,listener)
-    ah = to_hash(after,listener)
+    bh = to_hash(before.string,listener)
+    ah = to_hash((build.workspace+"rvm.env").read,listener)
     ah.each do |k,v|
       bv = bh[k]
 
@@ -54,9 +52,9 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     s=="" ? nil : s
   end
 
-  def to_hash(io,listener)
+  def to_hash(export,listener)
     r = {}
-    io.string.split("\n").each do |l|
+    export.split("\n").each do |l|
       if l.start_with? "declare -x " then
         l = l[11..-1]  # trim off "declare -x "
         k,v = l.split("=",2)
