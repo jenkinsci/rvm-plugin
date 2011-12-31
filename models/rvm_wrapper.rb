@@ -3,16 +3,14 @@ require 'stringio'
 class RvmWrapper < Jenkins::Tasks::BuildWrapper
   display_name "Run the build in a RVM-managed environment"
 
-  attr_accessor :vm, :gemset
+  attr_accessor :impl
 
   def initialize(attrs)
-    @vm = fix_empty attrs['vm']
-    @gemset = fix_empty attrs['gemset']
+    @impl = fix_empty attrs['impl']
   end
 
   def setup(build, launcher, listener)
-    arg = vm
-    arg += '@'+@gemset  if @gemset
+    arg = @impl
 
     listener << "Capturing environment variables produced by 'rvm use #{arg}'\n"
     
