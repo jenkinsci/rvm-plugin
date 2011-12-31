@@ -6,5 +6,5 @@ Jenkins::Plugin::Specification.new do |plugin|
   plugin.url = 'https://wiki.jenkins-ci.org/display/JENKINS/RVM+Plugin'
   plugin.developed_by 'kohsuke', 'kk@kohsuke.org'
 
-  plugin.depends_on 'ruby-runtime', '0.7'
+  plugin.depends_on 'ruby-runtime', '0.8-SNAPSHOT'
 end
