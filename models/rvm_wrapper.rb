@@ -40,9 +40,9 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
         # look for PATH components that include ".rvm" and pick those up
         path = v.split(File::PATH_SEPARATOR).find_all{|p| p =~ /[\\\/]\.rvm[\\\/]/ }.join(File::PATH_SEPARATOR)
         build.env["PATH+RVM"] = path
-        listener.debug "Adding PATH+RVM=#{path}"
+        #listener.debug "Adding PATH+RVM=#{path}"
       else
-        listener.debug "Adding #{k}=#{v}"
+        #listener.debug "Adding #{k}=#{v}"
         build.env[k] = v
       end
     end
