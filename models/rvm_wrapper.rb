@@ -22,7 +22,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     end
 
     after = StringIO.new()
-    if launcher.execute("bash","-c","source ~/.rvm/scripts/rvm && rvm_install_on_use_flag=1 && rvm use --create #{arg} && export > rvm.env", {:out=>listener})!=0 then
+    if launcher.execute("bash","-c","source ~/.rvm/scripts/rvm && rvm_install_on_use_flag=1 && rvm use --create #{arg} && export > rvm.env", {:out=>listener,:chdir=>build.workspace})!=0 then
       build.abort "Failed to setup RVM environment"
     end
 
