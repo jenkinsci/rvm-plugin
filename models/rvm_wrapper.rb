@@ -16,9 +16,17 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     
     before = StringIO.new()
     if launcher.execute("bash","-c","export", {:out=>before})!=0 then
-      listener << "Failed to fork bash"
+      listener << "Failed to fork bash\n"
       listener << before.string
       build.abort
+    end
+
+    if launcher.execute("bash","-c","test ! -f ~/.rvm/scripts/rvm")==0 then
+      listener << "Installing RVM\n"
+      installer = build.workspace+"rvm-installer"
+      installer.native.copyFrom(java.net.URL.new("https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"))
+      installer.chmod(0755)
+      launcher.execute(installer.realpath, {:out=>listener})
     end
 
     after = StringIO.new()
