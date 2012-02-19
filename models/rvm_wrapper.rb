@@ -38,7 +38,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     ah.each do |k,v|
       bv = bh[k]
 
-      next if k=="HUDSON_COOKIE" || k=="JENKINS_COOKIE" # cookie Jenkins uses to track process tree. ignore.
+      next if %w(HUDSON_COOKIE JENKINS_COOKIE).include? k # cookie Jenkins uses to track process tree. ignore.
       next if bv == v  # no change in value
 
       if k == "PATH" then
