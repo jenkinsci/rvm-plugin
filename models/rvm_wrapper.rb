@@ -21,7 +21,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
       build.abort
     end
 
-    if launcher.execute("bash","-c","test ! -f ~/.rvm/scripts/rvm")==0 then
+    if launcher.execute("bash","-c","test ! -f {/usr/local/rvm,~/.rvm}/scripts/rvm")==0 then
       listener << "Installing RVM\n"
       installer = build.workspace+"rvm-installer"
       installer.native.copyFrom(java.net.URL.new("https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"))
@@ -30,7 +30,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     end
 
     after = StringIO.new()
-    if launcher.execute("bash","-c","source ~/.rvm/scripts/rvm && rvm_install_on_use_flag=1 && rvm use --create #{arg} && export > rvm.env", {:out=>listener,:chdir=>build.workspace})!=0 then
+    if launcher.execute("bash","-c","source {/usr/local/rvm,~/.rvm}/scripts/rvm && rvm_install_on_use_flag=1 && rvm use --create #{arg} && export > rvm.env", {:out=>listener,:chdir=>build.workspace})!=0 then
       build.abort "Failed to setup RVM environment"
     end
 
@@ -43,8 +43,8 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
       next if bv==v  # no change in value
 
       if k=="PATH" then
-        # look for PATH components that include ".rvm" and pick those up
-        path = v.split(File::PATH_SEPARATOR).find_all{|p| p =~ /[\\\/]\.rvm[\\\/]/ }.join(File::PATH_SEPARATOR)
+        # look for PATH components that include "rvm" and pick those up
+        path = v.split(File::PATH_SEPARATOR).find_all{|p| p =~ /[\\\/]rvm[\\\/]/ }.join(File::PATH_SEPARATOR)
         build.env["PATH+RVM"] = path
         #listener.debug "Adding PATH+RVM=#{path}"
       else
