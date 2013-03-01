@@ -11,7 +11,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
 
   def rvm_path
     @rvm_path ||= ["~/.rvm/scripts/rvm", "/usr/local/rvm/scripts/rvm"].find do |path|
-      launcher.execute("bash", "-c", "test -f #{path}") == 0
+      @launcher.execute("bash", "-c", "test -f #{path}") == 0
     end
   end
 
@@ -20,6 +20,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
   end
 
   def setup(build, launcher, listener)
+    @launcher = launcher
     arg = @impl
 
     listener << "Capturing environment variables produced by 'rvm use #{arg}'\n"
