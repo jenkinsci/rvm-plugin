@@ -1,6 +1,6 @@
 Jenkins::Plugin::Specification.new do |plugin|
   plugin.name = 'rvm'
-  plugin.version = '0.3'
+  plugin.version = '0.4'
   plugin.description = 'Run Jenkins builds in RVM'
 
   plugin.url = 'https://wiki.jenkins-ci.org/display/JENKINS/RVM+Plugin'
@@ -8,4 +8,5 @@ Jenkins::Plugin::Specification.new do |plugin|
   plugin.uses_repository :github => 'rvm-plugin'
 
   plugin.depends_on 'ruby-runtime', '0.7'
+  plugin.depends_on 'token-macro', '1.5.1'
 end
