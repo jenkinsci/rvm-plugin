@@ -1,4 +1,6 @@
 require 'stringio'
+include Java
+java_import org.jenkinsci.plugins.tokenmacro.TokenMacro
 
 class RvmWrapper < Jenkins::Tasks::BuildWrapper
   display_name "Run the build in a RVM-managed environment"
@@ -21,9 +23,9 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
 
   def setup(build, launcher, listener)
     @launcher = launcher
-    arg = @impl
+    rvm_string = TokenMacro.expandAll(build.native, listener.native, @impl)
 
-    listener << "Capturing environment variables produced by 'rvm use #{arg}'\n"
+    listener << "Capturing environment variables produced by 'rvm use #{rvm_string}'\n"
 
     before = StringIO.new()
     if launcher.execute("bash", "-c", "export", {:out => before}) != 0 then
@@ -40,12 +42,13 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
       launcher.execute(installer.realpath, {:out => listener})
     end
 
-    if launcher.execute("bash","-c"," source #{rvm_path} && rvm use --install --create #{arg} && export > rvm.env", {:out=>listener,:chdir=>build.workspace}) != 0 then
+    if launcher.execute("bash","-c"," source #{rvm_path} && rvm use --install --create #{rvm_string} && export > rvm.env", {:out=>listener,:chdir=>build.workspace}) != 0 then
       build.abort "Failed to setup RVM environment"
     end
 
     bh = to_hash(before.string, listener)
     ah = to_hash((build.workspace + "rvm.env").read, listener)
+
     ah.each do |k,v|
       bv = bh[k]
 
