@@ -7,5 +7,5 @@ Jenkins::Plugin::Specification.new do |plugin|
   plugin.developed_by 'kohsuke', 'kk@kohsuke.org'
   plugin.uses_repository :github => 'rvm-plugin'
 
-  plugin.depends_on 'ruby-runtime', '0.7'
+  plugin.depends_on 'ruby-runtime', '0.10'
 end

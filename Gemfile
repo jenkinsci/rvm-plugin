@@ -1,7 +1,7 @@
 source :rubygems
 
-gem 'jenkins-plugin-runtime', '~> 0.1.17'
+gem "jenkins-plugin-runtime", "~> 0.2.3"
 
 group :development do
-  gem 'jpi', '~> 0.3.1'
+  gem 'jpi'
 end
