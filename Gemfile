@@ -1,4 +1,4 @@
-source :rubygems
+source "https://rubygems.org"
 
 gem 'jenkins-plugin-runtime', '~> 0.1.17'
 
