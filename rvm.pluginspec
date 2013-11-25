@@ -7,6 +7,6 @@ Jenkins::Plugin::Specification.new do |plugin|
   plugin.developed_by 'kohsuke', 'kk@kohsuke.org'
   plugin.uses_repository :github => 'rvm-plugin'
 
-  plugin.depends_on 'ruby-runtime', '0.10'
-  plugin.depends_on 'token-macro', '1.5.1'
+  plugin.depends_on 'ruby-runtime', '0.12'
+  plugin.depends_on 'token-macro', '1.9'
 end
