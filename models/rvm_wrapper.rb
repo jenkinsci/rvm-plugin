@@ -7,8 +7,10 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
 
   attr_accessor :impl
 
+  DEFAULT_IMPL = '.'
+
   def initialize(attrs)
-    @impl = fix_empty attrs['impl']
+    @impl = fix_empty(attrs['impl']) || DEFAULT_IMPL
   end
 
   def rvm_path
