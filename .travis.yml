@@ -3,4 +3,3 @@ rvm:
   - jruby-19mode
 script:
   - bundle exec rake spec
-  - bundle exec rake package
