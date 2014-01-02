@@ -5,9 +5,15 @@ java_import org.jenkinsci.plugins.tokenmacro.TokenMacro
 class RvmWrapper < Jenkins::Tasks::BuildWrapper
   display_name "Run the build in a RVM-managed environment"
 
-  attr_accessor :impl
-
   DEFAULT_IMPL = '.'
+
+  class << self
+    def transient?(symbol)
+      [:rvm_path, :launcher].include?(symbol)
+    end
+  end
+
+  attr_accessor :impl
 
   def initialize(attrs)
     @impl = fix_empty(attrs['impl']) || DEFAULT_IMPL
