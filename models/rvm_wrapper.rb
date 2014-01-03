@@ -7,11 +7,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
 
   DEFAULT_IMPL = '.'
 
-  class << self
-    def transient?(symbol)
-      [:rvm_path, :launcher].include?(symbol)
-    end
-  end
+  transient :launcher, :rvm_path
 
   attr_accessor :impl
 
