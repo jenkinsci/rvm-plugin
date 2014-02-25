@@ -30,7 +30,7 @@ def convert(config_file)
   new_config = nil
   File.open(config_file, 'r') do |file|
     doc = REXML::Document.new(file)
-    doc.elements.each('project/buildWrappers/ruby-proxy-object') do |proxy_object|
+    doc.elements.each('*/buildWrappers/ruby-proxy-object') do |proxy_object|
       rewrite_proxy_class_name(proxy_object)
       remove_unwanted_serialized_attributes(proxy_object)
     end
