@@ -1,4 +1,5 @@
 require 'stringio'
+require 'shellwords'
 include Java
 java_import org.jenkinsci.plugins.tokenmacro.TokenMacro
 
@@ -43,7 +44,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
       installer = build.workspace + "rvm-installer"
       installer.native.copyFrom(java.net.URL.new("https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"))
       installer.chmod(0755)
-      launcher.execute(installer.realpath, {:out => listener})
+      launcher.execute(Shellwords::shellescape(installer.realpath), {:out => listener})
     end
 
     if launcher.execute("bash","-c"," source #{rvm_path} && rvm use --install --create #{rvm_string} && export > rvm.env", {:out=>listener,:chdir=>build.workspace}) != 0 then
