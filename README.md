@@ -27,3 +27,7 @@ After updating RVM plugin, you *need to update* your project's configuration fil
  ```
 
 The update script renames original configuration file to `<original file name>.bak` in case update fails.
+
+
+Contributors:
+[Daniel Foglio](https://github.com/danielfoglio)
