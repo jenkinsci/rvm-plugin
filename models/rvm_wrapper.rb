@@ -17,7 +17,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
   end
 
   def rvm_path
-    @rvm_path ||= ["~/.rvm/scripts/rvm", "/usr/local/rvm/scripts/rvm"].find do |path|
+    @rvm_path = ["~/.rvm/scripts/rvm", "/usr/local/rvm/scripts/rvm"].find do |path|
       @launcher.execute("bash", "-c", "test -f #{path}") == 0
     end
   end
