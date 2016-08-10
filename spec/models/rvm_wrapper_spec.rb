@@ -13,19 +13,28 @@ describe RvmWrapper do
       expect(described_class).to be_transient(:launcher)
       expect(described_class).to be_transient('launcher')
     end
+  end
 
-    it 'should make @rvm_path transient' do
-      expect(described_class).to be_transient(:rvm_path)
-      expect(described_class).to be_transient('rvm_path')
+  let(:wrapper) { described_class.new('impl' => '.') }
+  let(:build) { double('build', native: '') }
+  let(:launcher) { double('launcher') }
+  let(:listener) { double('listener', native: '', :<< => '') }
+
+  describe '#rvm_path' do
+    context 'when rvm exists in ~/.rvm/scripts' do
+      it 'should always test paths' do
+        expect(launcher).to receive(:execute).with('bash', '-c', /\Atest -f ~\/.rvm\/scripts\/rvm\z/).twice.and_return(0)
+
+        wrapper.instance_variable_set(:@launcher, launcher)
+
+        2.times do
+          expect(wrapper.rvm_path).to eq('~/.rvm/scripts/rvm')
+        end
+      end
     end
   end
 
   describe '#setup' do
-    let(:wrapper) { described_class.new('impl' => '.') }
-    let(:build) { double('build', native: '') }
-    let(:launcher) { double('launcher') }
-    let(:listener) { double('listener', native: '', :<< => '') }
-
     before do
       allow(TokenMacro).to receive(:expandAll)
 
