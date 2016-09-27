@@ -42,7 +42,7 @@ class RvmWrapper < Jenkins::Tasks::BuildWrapper
     if ! rvm_installed?
       listener << "Installing RVM\n"
       installer = build.workspace + "rvm-installer"
-      installer.native.copyFrom(java.net.URL.new("https://raw.github.com/wayneeseguin/rvm/master/binscripts/rvm-installer"))
+      installer.native.copyFrom(java.net.URL.new("https://raw.githubusercontent.com/wayneeseguin/rvm/master/binscripts/rvm-installer"))
       installer.chmod(0755)
       launcher.execute(Shellwords::shellescape(installer.realpath), {:out => listener})
     end
